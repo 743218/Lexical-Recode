@@ -31,7 +31,6 @@ void ModuleManager::init() {
 	moduleList.push_back(new AntiCrystal());
 	moduleList.push_back(new PopCounter());
 	moduleList.push_back(new PacketMine());
-	moduleList.push_back(new TryDupe1());
 	moduleList.push_back(new HotbarSorter());
 	moduleList.push_back(new Offhand());
 

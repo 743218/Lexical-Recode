@@ -4,10 +4,9 @@
 //
 // NBT helpers for shulker-box container manipulation.
 //
-// This header layers the two convenience primitives the dupe engine relies on
+// This header layers the two convenience primitives for native interop
 // (Tag::createNative<T>() and CompoundTag::putNative()) on top of the plain
-// Tag hierarchy, and exposes a handful of shulker-container accessors used by
-// Dupe.cpp / TryDupe.cpp.
+// Tag hierarchy, and exposes a handful of shulker-container accessors.
 //
 // IMPORTANT: This header must be included AFTER the definition of Tag /
 // CompoundTag / CompoundTagVariant. If your Tag header is a standalone
@@ -396,25 +395,11 @@ inline bool CompoundTag::putNative(
 // ---------------------------------------------------------------------------
 // Native game bindings.
 //
-// Dupe.cpp / TryDupe.cpp call into native Bedrock code to serialize and
-// deserialize ItemStacks. These are thin wrappers so the rest of the codebase
-// does not have to include Addresses.h directly.
+// Thin wrappers so the rest of the codebase does not have to include
+// Addresses.h directly.
 // ---------------------------------------------------------------------------
 
 namespace ShulkerNBT {
-
-    // Serialize a native ItemStack into a fresh CompoundTag entry using the
-    // game's ItemStackBase::save. Returns null if the save function or the
-    // stack is unavailable.
-    //
-    // Implementation lives in Dupe.cpp; this declaration is here so callers
-    // (including TryDupe.cpp) can link against it without pulling in the full
-    // Dupe class.
-    std::unique_ptr<CompoundTag> saveNativeItemEntry(const ItemStack& stack);
-
-    // Deserialize a CompoundTag entry into a native ItemStack using the game's
-    // ItemStack::loadItem. Declared here for symmetry with saveNativeItemEntry.
-    void loadNativeItemEntry(ItemStack& out, const CompoundTag& entry);
 
     // Find the shulker "Items" list on a root compound, checking the common
     // Bedrock spellings ("Items", "items", "__Legacy__Items") and descending

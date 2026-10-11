@@ -30,7 +30,6 @@
 #include "Modules/Category/Player/PopCounter.h"
 #include "Modules/Category/Player/PacketMine.h"
 #include "Modules/Category/Player/Offhand.h"
-#include "Modules/Category/Player/TRyDupe.h"
 
 
 //WORLD

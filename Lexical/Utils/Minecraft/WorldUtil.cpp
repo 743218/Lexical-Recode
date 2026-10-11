@@ -113,71 +113,76 @@ float WorldUtil::boundary(float start, float distance) {
 	}
 	return (1 - (start - floor(start))) / distance;
 }
-
 std::string WorldUtil::getEntityNameTags(Actor* entity) {
-	uint32_t entityId = entity->getActorTypeComponent()->id;
+	if (entity == nullptr)
+		return std::string();
+
+	auto* actorType = entity->getActorTypeComponent();
+	if (actorType == nullptr)
+		return std::string();
+
+	uint32_t entityId = actorType->id;
 
 	switch (entityId) {
 	case 319: {
-		// Player
-		return StringUtil::sanitize(*entity->getNameTag());
-		break;
+		std::string* nameTag = entity->getNameTag();
+		if (nameTag == nullptr)
+			return std::string();
+		return StringUtil::sanitize(*nameTag);
 	}
 	case 64: {
-		// Item
 		ItemStack* stack = (ItemStack*)((uintptr_t)entity + 0x448);
+		if (stack == nullptr || !stack->isValid())
+			return std::string("No item");
 
-		if (!stack->isValid())
+		if (stack->item.get() == nullptr)
 			return std::string("No item");
 
 		std::stringstream textbuild;
 
 		if (stack->mCount > 1)
-			textbuild << std::to_string(stack->mCount) << "x ";
+			textbuild << stack->mCount << "x ";
+
+		std::string name = *(std::string*)(stack->item.get() + 0xD0);
 
 		bool wasSpace = true;
-		std::string name = *(std::string*)(stack->item.get() + 0xD0);
-		for (int i = 0; i < name.size(); i++) {
-			if (wasSpace) {
-				name[i] = toupper(name[i]);
-				wasSpace = false;
-			}
-
+		for (size_t i = 0; i < name.size(); i++) {
 			if (name[i] == '_') {
-				wasSpace = true;
 				name[i] = ' ';
+				wasSpace = true;
+				continue;
+			}
+			if (wasSpace) {
+				name[i] = (char)toupper((unsigned char)name[i]);
+				wasSpace = false;
 			}
 		}
 
 		textbuild << name;
-
 		return textbuild.str();
-		break;
 	}
 	default: {
 		std::string name = entity->getEntityLocNameString();
-		name.erase(0, 7);	// erase "entity."
+		if (name.size() >= 7)
+			name.erase(0, 7);
+
 		bool wasSpace = true;
-		for (int i = 0; i < name.size(); i++) {
-			if (wasSpace) {
-				name[i] = toupper(name[i]);
-				wasSpace = false;
-			}
-
-			if (name[i] == '_') {
-				wasSpace = true;
-				name[i] = ' ';
-			}
-
+		for (size_t i = 0; i < name.size(); i++) {
 			if (name[i] == '.') {
-				name.erase(i, 5);	// erase ".name"
+				name.erase(i);
 				break;
+			}
+			if (name[i] == '_') {
+				name[i] = ' ';
+				wasSpace = true;
+				continue;
+			}
+			if (wasSpace) {
+				name[i] = (char)toupper((unsigned char)name[i]);
+				wasSpace = false;
 			}
 		}
 		return name;
-		break;
 	}
 	}
-
-	return "NULL";
 }

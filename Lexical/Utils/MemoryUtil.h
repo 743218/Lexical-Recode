@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include "../Libs/xorstr.hpp"
 #include "../SDK/Addresses.h"
+#include <string>
 
 #define CLASS_MEMBER(type, name, offset)																			\
 __declspec(property(get = get##name, put = set##name)) type name;													\
@@ -17,7 +18,7 @@ inline void set##name(type v) { *reinterpret_cast<type*>(reinterpret_cast<uintpt
 #define FindVTable(str) MemoryUtil::getVtableFromSig(xorstr_(str));
 #define FindFuncFromCall(str) MemoryUtil::getFuncFromCall(MemoryUtil::findSignature(xorstr_(str)));
 
-#define HASH_KEY xorstr_("MerPlayzMC")
+#define HASH_KEY xorstr_("TekitFunc")
 #define DLL_HASH std::to_string(StringUtil::getFileHash(MemoryUtil::locateDirectory().c_str(), StringUtil::hash(HASH_KEY).c_str())) // hash should be known at compile time
 
 namespace MemoryUtil {

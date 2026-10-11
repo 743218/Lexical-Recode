@@ -26,11 +26,13 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Combat\Surround.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\ChatSuffix.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\Timer.cpp" />
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Clip.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Fly.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Jetpack.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\NoClip.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\ReverseStep.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Speed.cpp" />
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\AntiCrystal.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\PacketMine.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\PopCounter.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\HotbarSorter.cpp" />
@@ -80,7 +82,6 @@
     <ClCompile Include="Utils\Minecraft\WorldUtil.cpp" />
     <ClCompile Include="Utils\NetworkUtil.cpp" />
     <ClCompile Include="Utils\TimerUtil.cpp" />
-    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\TryDupe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets\Fonts\Bahnschrift.h" />
@@ -769,9 +770,6 @@
     <ClInclude Include="Utils\NetworkUtil.h" />
     <ClInclude Include="Utils\StringUtil.h" />
     <ClInclude Include="Utils\TimerUtil.h" />
-    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\Dupe.h" />
-    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\DupeCompat.h" />
-    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\TryDupe.h" />
     <ClInclude Include="SDK\NBT\ShulkerNBT.h" />
   </ItemGroup>
   <ItemGroup>

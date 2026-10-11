@@ -1,42 +1,44 @@
 #include "FriendManager.h"
 
-std::vector<std::string> friendList;
+static std::vector<std::string> friendList;
+static std::mutex friendListMutex;
 
 std::vector<std::string> FriendManager::getList() {
+	std::lock_guard<std::mutex> lock(friendListMutex);
 	return friendList;
 }
 
-bool FriendManager::isInList(std::string name) {
-	if (friendList.empty()) return false;
-	for (int i = 0; i < friendList.size(); i++) {
-		std::string curFriend = friendList[i];
-		if (curFriend == name) return true;
+bool FriendManager::isInList(const std::string& name) {
+	std::lock_guard<std::mutex> lock(friendListMutex);
+	for (const auto& curFriend : friendList) {
+		if (curFriend == name)
+			return true;
 	}
 	return false;
 }
 
-bool FriendManager::addToList(std::string name) {
-	if (!isInList(name)) {
-		friendList.push_back(name);
-		return true;
+bool FriendManager::addToList(const std::string& name) {
+	std::lock_guard<std::mutex> lock(friendListMutex);
+	for (const auto& curFriend : friendList) {
+		if (curFriend == name)
+			return false;
 	}
-	return false;
+	friendList.push_back(name);
+	return true;
 }
 
-bool FriendManager::removeFromList(std::string name) {
-	if (friendList.empty()) return false;
-	if (isInList(name)) {
-		for (int i = 0; i < friendList.size(); i++) {
-			std::string curFriend = friendList[i];
-			if (curFriend == name) {
-				friendList.erase(friendList.begin() + i);
-				return true;
-			}
+bool FriendManager::removeFromList(const std::string& name) {
+	std::lock_guard<std::mutex> lock(friendListMutex);
+	for (auto it = friendList.begin(); it != friendList.end(); ++it) {
+		if (*it == name) {
+			friendList.erase(it);
+			return true;
 		}
 	}
 	return false;
 }
 
-void FriendManager::setFriendList(std::vector<std::string> newList) {
+void FriendManager::setFriendList(const std::vector<std::string>& newList) {
+	std::lock_guard<std::mutex> lock(friendListMutex);
 	friendList = newList;
 }

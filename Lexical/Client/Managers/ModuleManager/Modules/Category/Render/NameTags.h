@@ -16,6 +16,9 @@ struct NameTagsTransform {
 
 class NameTags : public Module {
 private:
+	std::unordered_map<uint32_t, int> targetValidFrames;
+	static constexpr int REQUIRED_VALID_FRAMES = 200;
+
 	int renderMode = 2;
 	int opacity = 125;
 	bool displayArmor = true;

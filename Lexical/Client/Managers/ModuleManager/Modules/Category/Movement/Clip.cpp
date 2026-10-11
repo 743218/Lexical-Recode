@@ -10,16 +10,6 @@ void Clip::onNormalTick(LocalPlayer* localPlayer) {
 	if (jetpackStop) {
 		if (auto jetpack = ModuleManager::getModule<Jetpack>()) {
 			if (jetpack->isEnabled()) {
-				// Reset to the default player AABB while Jetpack is on.
-				Vec3<float> feetPos = localPlayer->getPos();
-				Vec3<float>& lower = localPlayer->aabbShape->aabb.lower;
-				Vec3<float>& upper = localPlayer->aabbShape->aabb.upper;
-				lower.x = feetPos.x - 0.3f;
-				lower.y = feetPos.y;
-				lower.z = feetPos.z - 0.3f;
-				upper.x = feetPos.x + 0.3f;
-				upper.y = feetPos.y + 1.8f;
-				upper.z = feetPos.z + 0.3f;
 				return;
 			}
 		}

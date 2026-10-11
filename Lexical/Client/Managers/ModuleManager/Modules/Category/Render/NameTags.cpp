@@ -37,6 +37,9 @@ void NameTags::Render() {
 	const size_t maxTags = 256;
 	size_t rendered = 0;
 
+	std::unordered_map<uint32_t, int> newFrames;
+	newFrames.reserve(actorList.size());
+
 	for (const auto& entity : actorList) {
 		if (rendered >= maxTags)
 			break;
@@ -60,6 +63,20 @@ void NameTags::Render() {
 
 		if (!isTarget)
 			continue;
+
+		uint32_t uniqueId = entity->getRuntimeIDComponent()->runtimeId.id;
+
+		int frames = 0;
+		auto it = targetValidFrames.find(uniqueId);
+		if (it != targetValidFrames.end())
+			frames = it->second;
+
+		if (frames < REQUIRED_VALID_FRAMES)
+			frames++;
+
+		newFrames[uniqueId] = frames;
+
+		const bool canDrawItems = (frames >= REQUIRED_VALID_FRAMES);
 
 		Vec3<float> entityPos = entity->getEyePos();
 
@@ -110,7 +127,7 @@ void NameTags::Render() {
 
 		rendered++;
 
-		if (displayArmor) {
+		if (displayArmor && canDrawItems) {
 			float scale = 0.85f * textSize;
 			float spacing = 15.f * scale;
 
@@ -159,6 +176,8 @@ void NameTags::Render() {
 			}
 		}
 	}
+
+	targetValidFrames = std::move(newFrames);
 
 	transformList.push(std::move(transform));
 

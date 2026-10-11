@@ -182,3 +182,12 @@ void MoveUtil::setSpeed(const float& speed) {
 	Game::getLocalPlayer()->stateVector->velocity.x = motion.x;
 	Game::getLocalPlayer()->stateVector->velocity.z = motion.y;
 }
+
+bool PlayerUtil::isEating(LocalPlayer* localPlayer) {
+	return localPlayer != nullptr && localPlayer->getItemUseDuration() > 0;
+}
+
+bool PlayerUtil::isPacketMining() {
+	auto packetMine = ModuleManager::getModule<PacketMine>();
+	return packetMine != nullptr && packetMine->isEnabled() && packetMine->getBreakPos() != BlockPos(0, 0, 0);
+}

@@ -197,10 +197,46 @@ bool ImFX::CleanupFX()
         sourceBitmap = nullptr;
     }
 
-    d2dFactory->Release();
-    d2dDevice->Release();
-    d2dDeviceContext->Release();
-    blurEffect->Release();
+    if (blurEffect != nullptr)
+    {
+        blurEffect->Release();
+        blurEffect = nullptr;
+    }
+    if (displacementMapEffect != nullptr)
+    {
+        displacementMapEffect->Release();
+        displacementMapEffect = nullptr;
+    }
+    if (turbulenceEffect != nullptr)
+    {
+        turbulenceEffect->Release();
+        turbulenceEffect = nullptr;
+    }
+    if (shadowEffect != nullptr)
+    {
+        shadowEffect->Release();
+        shadowEffect = nullptr;
+    }
+    if (compositeEffect != nullptr)
+    {
+        compositeEffect->Release();
+        compositeEffect = nullptr;
+    }
+    if (d2dDeviceContext != nullptr)
+    {
+        d2dDeviceContext->Release();
+        d2dDeviceContext = nullptr;
+    }
+    if (d2dDevice != nullptr)
+    {
+        d2dDevice->Release();
+        d2dDevice = nullptr;
+    }
+    if (d2dFactory != nullptr)
+    {
+        d2dFactory->Release();
+        d2dFactory = nullptr;
+    }
     d2dInit = false;
     return true;
 }
@@ -210,8 +246,10 @@ bool ImFX::EndFrame()
     if (!d2dInit) {
         return false;
     }
-    backBuffer->Release();
-    backBuffer = nullptr;
+    if (backBuffer != nullptr) {
+        backBuffer->Release();
+        backBuffer = nullptr;
+    }
     return true;
 }
 

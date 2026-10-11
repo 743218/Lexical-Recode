@@ -94,8 +94,19 @@ void ModuleManager::onClientTick() {
 void ModuleManager::onNormalTick(LocalPlayer* localPlayer) {
 	if (!Client::isInitialized()) return;
 	if (!localPlayer->level) return;
+
+	if (auto ka = ModuleManager::getModule<KillAura>()) {
+		if (ka->isEnabled()) ka->onNormalTick(localPlayer);
+	}
+	if (auto ac = ModuleManager::getModule<AutoCrystal>()) {
+		if (ac->isEnabled()) ac->onNormalTick(localPlayer);
+	}
+
 	for (auto& mod : moduleList) {
 		if (mod->isEnabled() || mod->runOnBackground()) {
+			if (mod == ModuleManager::getModule<KillAura>()) continue;
+			if (mod == ModuleManager::getModule<AutoCrystal>()) continue;
+
 			mod->onNormalTick(localPlayer);
 		}
 	}

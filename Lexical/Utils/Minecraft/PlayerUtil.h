@@ -17,6 +17,8 @@ namespace PlayerUtil {
 		textPacket->mXuid = textPacket->mXuid;
 		Game::getLocalPlayer()->level->getPacketSender()->send(textPacket);
 	}
+	bool isEating(LocalPlayer* localPlayer);
+	bool isPacketMining();
 }
 
 namespace MoveUtil {

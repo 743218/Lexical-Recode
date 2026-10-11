@@ -76,6 +76,9 @@ private:
 				}
 				ImGuiRenderer::Render();
 				ImGuiRenderer::EndFrame(d3d11Context, renderTargetView);
+				// ImFX::EndFrame() consumed our dxgiBackBuffer reference (it Releases the
+				// surface ImFX::NewFrame was given): ownership transferred, do not release below.
+				dxgiBackBuffer = nullptr;
 				d3d11Context->Flush();
 			}
 

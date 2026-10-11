@@ -3,41 +3,62 @@
 
 class KillAura : public Module {
 private:
-	float range = 5.f;
-	float wallRange = 3.f;
-	int interval = 1;
-	int rotMode = 1;
-	bool randomize = true;
-	int hitType = 0;
-	int hitAttempts = 1;
-	int hitChance = 100;
-	int autoWeaponMode = 0;
-	bool eatStop = false;
-	bool includeMobs = false;
-	bool hurtTimeCheck = false;
-	bool caCompatibility = true;
-	bool packetAttack = false;
-	bool java = false;
-public:
-	bool render = false;
-	UIColor renderColor = UIColor(255, 255, 255, 255);
-private:
-	std::vector<Actor*> targetList;
-	int oTick = INT_MAX;
-	bool shouldRot = false;
-	Vec2<float> rotAngle;
+	int switchMode = 0;    // 0 = None, 1 = Switch, 2 = Silent
+	int targetMode = 0;    // 0 = Single, 1 = Multi
+	int rotateMode = 2;
 
-	static bool sortByDist(Actor* a1, Actor* a2);
-	int getBestWeaponSlot(Actor* target);
-	void Attack(Actor* target);
+	float range = 4.f;
+	int attackDelay = 10;
+
+	bool packet = false;
+	bool mobs = false;
+	bool silent = false;
+
+	// Swing
+	bool swing = true;
+
+	Actor* target = nullptr;
+	std::vector<Actor*> targets;
+	int weaponSlot = -1;
+	int attackTicks = 0;
+	int hitTicks = 0;
+	int pauseTicks = 0;
+	int switchBackSlot = -1;
+
+	// Ring render
+	bool ring = false;
+	float ringRadius = 0.6f;
+	float ringThickness = 0.12f;
+	float ringHeight = 0.12f;
+	float ringSpeed = 2.f;
+	int ringAnim = 1;      // 0 = Robotic, 1 = Smooth
+	int ringQuality = 1;   // 0 = 128, 1 = 256, 2 = 360
+	UIColor ringColor = UIColor(255, 255, 255, 255);
+
+	Actor* ringLastTarget = nullptr;
+	Vec3<float> ringSmoothed;
+	float ringTime = 0.f;
+
+	void renderRing(const Vec3<float>& center, float radius, float thickness, float height, int segments, const UIColor& color);
+
+	int getBestWeaponSlot();
+	bool isAxe(ItemStack* itemStack);
+	bool isSword(ItemStack* itemStack);
+	bool isMace(ItemStack* itemStack);
+	bool isTrident(ItemStack* itemStack);
+	bool isTargetValid(Actor* actor);
+	void rotateToTarget();
+	void attackActor(Actor* actor);
+
 public:
 	KillAura();
-	
+
+	int getWeaponSlot() const { return weaponSlot; }
 	std::string getModeText() override;
-	void onDisable() override;
+
 	void onEnable() override;
-	void onNormalTick(LocalPlayer* localPlayer) override;
 	void onUpdateRotation(LocalPlayer* localPlayer) override;
 	void onSendPacket(Packet* packet, bool& cancel) override;
+	void onNormalTick(LocalPlayer* localPlayer) override;
 	void onLevelRender() override;
 };

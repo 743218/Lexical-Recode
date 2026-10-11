@@ -17,7 +17,7 @@ public:
 	}
 
 	bool canBeBuiltOver(BlockSource* region, BlockPos const& blockPos) {
-		return MemoryUtil::CallVFunc<104, bool>(this, region, blockPos);
+		return MemoryUtil::CallVFunc<103, bool>(this, region, blockPos);
 	}
 
 	bool isSolid() {

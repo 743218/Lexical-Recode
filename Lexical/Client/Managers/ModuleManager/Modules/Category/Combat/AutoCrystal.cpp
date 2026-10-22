@@ -410,7 +410,9 @@ void AutoCrystal::onNormalTick(LocalPlayer* localPlayer) {
 
 	const int oldSlot = InventoryUtil::getSelectedSlot();
 
-	int attackSlot = InventoryUtil::getSelectedSlot();
+	int attackSlot = PlayerUtil::selectedSlotServerSide;
+	if (attackSlot = -1) InventoryUtil::sendMobEquipment(InventoryUtil::getSelectedSlot()); // this should sync?
+	
 	if (auto ka = ModuleManager::getModule<KillAura>()) {
 		if (ka->isEnabled() && ka->getWeaponSlot() != -1)
 			attackSlot = ka->getWeaponSlot();

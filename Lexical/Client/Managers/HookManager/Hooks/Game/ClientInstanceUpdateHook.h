@@ -8,6 +8,9 @@ private:
 
 	static __int64 ClientInstance_UpdateCallback(ClientInstance* _this, bool a2) {
 		Game::clientInstance = _this;
+		if (_this) {
+			ModuleManager::onClientTick(); //Thread safety!
+		}
 		return oFunc(_this, a2);
 	}
 public:

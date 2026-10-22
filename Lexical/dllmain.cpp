@@ -8,7 +8,6 @@ DWORD WINAPI initClient(LPVOID lpParameter) {
     Client::init();
 
     while (Client::isInitialized()) {
-        ModuleManager::onClientTick();
         Sleep(50);
     }
 

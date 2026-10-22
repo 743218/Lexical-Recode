@@ -17,4 +17,14 @@ public:
 	int getItemUseDuration() {
 		return MemoryUtil::CallVFunc<162, int>(this);
 	}
+public:  //nonvirtual custom function
+	bool attack(Actor* actor, bool swing) {
+		if (actor && this->gameMode) {
+			this->gameMode->attack(actor);
+			if (swing) this->swing();
+			return true;
+		} else {
+			return false;
+		}
+	};
 };

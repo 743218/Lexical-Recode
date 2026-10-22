@@ -7,13 +7,13 @@ private:
 	static inline func_t oFunc;
 
 	static bool callback(GameMode* _this, Actor* _actor) {
+		if (_this && _actor) {
 		static PacketMine* packetMine = ModuleManager::getModule<PacketMine>();
-		//static AntiDesync* antiDesync = ModuleManager::getModule<AntiDesync>();
 		if (packetMine->isEnabled() && packetMine->getMultiTask() == 1) packetMine->reset();
-		//if (antiDesync->isEnabled() && Game::getLocalPlayer()->getItemUseDuration() > 0) return false;
 		bool cancel = false;
 		ModuleManager::onAttack(_actor, cancel);
 		if (cancel) return false;
+		}
 		return oFunc(_this, _actor);
 	}
 public:

@@ -7,6 +7,7 @@ private:
 	static inline func_t oFunc;
 
 	static bool callback(GameMode* _this, BlockPos const& blockPos, uint8_t face, bool a4) {
+		if (_this) {
 		static PacketMine* packetMine = ModuleManager::getModule<PacketMine>();
 		//static AntiDesync* antiDesync = ModuleManager::getModule<AntiDesync>();
 		if (packetMine->isEnabled() && packetMine->getMultiTask() == 1) packetMine->reset();
@@ -14,6 +15,7 @@ private:
 		bool cancel = false;
 		ModuleManager::onBuild(blockPos, face, cancel);
 		if (cancel) return false;
+		}
 		return oFunc(_this, blockPos, face, a4);
 	}
 public:

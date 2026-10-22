@@ -127,7 +127,7 @@ int KillAura::getBestWeaponSlot() {
 	int bestSlot = -1;
 	float bestDamage = 0.f;
 
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < 8; i++) {
 		ItemStack* itemStack = InventoryUtil::getItem(i);
 		if (!itemStack || !itemStack->item.get()) continue;
 

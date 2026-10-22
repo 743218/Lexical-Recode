@@ -186,19 +186,6 @@ void NameTags::Render() {
 }
 
 void NameTags::RenderD2D() {
-	if (!Game::canUseMoveKeys())
-		return;
-
-	if (Game::clientInstance == nullptr)
-		return;
-
-	if (Game::clientInstance->guiData == nullptr)
-		return;
-
-	LocalPlayer* localPlayer = Game::getLocalPlayer();
-	if (localPlayer == nullptr)
-		return;
-
 	Vec2<float> windowSize = Game::clientInstance->guiData->windowSizeReal;
 	Vec2<float> windowScaled = Game::clientInstance->guiData->windowSizeScaled;
 

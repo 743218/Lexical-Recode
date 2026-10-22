@@ -34,9 +34,11 @@ public:
     bool onGround() {
         return entityContext.hasComponent<OnGroundFlagComponent>();
     }
+
     void jumpFromGround() {
         entityContext.getOrAddComponent<FlagComponent<JumpFromGroundRequestFlag>>();
     }
+
     void setOnGround(bool state) {
         if (state) {
             entityContext.getOrAddComponent<OnGroundFlagComponent>();
@@ -45,12 +47,15 @@ public:
             entityContext.removeComponent<OnGroundFlagComponent>();
         }
     };
+
     bool isInWater() const {
         return entityContext.hasComponent<FlagComponent<InWaterFlag>>();
     }
+
     bool isInLava() const {
         return entityContext.hasComponent<FlagComponent<InLavaFlag>>();
     }
+
     bool isInLiquid() const {
         return this->isInWater() || this->isInLava();
     }
@@ -129,14 +134,14 @@ public:
         std::unordered_map<int, AttributeInstance>::iterator it = attrMap.find((int)id);
         if (it != attrMap.end()) return &it->second;
         return nullptr;
-
     }
+    
     Vec3<float> getPos() {
-        return stateVector->pos;
+        return stateVector ? stateVector->pos : Vec3<float>(0.f, 0.f, 0.f);
     }
 
     Vec3<float> getEyePos() {
-        return getRenderPositionComponent()->eyePos;
+        return getRenderPositionComponent() ? getRenderPositionComponent()->eyePos : getPos();
     }
 
     float calculateAttackDamage(Actor* target) {
@@ -195,6 +200,10 @@ public:
         Func(this, pos);
     }
 
+    void setPosViaComponent(const Vec3<float>& pos) {
+        this->stateVector->pos = pos;
+    };
+
     bool hasHorizontalCollision() {
         using func_t = bool(__thiscall*)(__int64, __int64);
         static func_t Func = (func_t)Addresses::ActorCollision_hasHorizontalCollision;
@@ -238,6 +247,7 @@ public:
     void swing() {
         MemoryUtil::CallVFunc<117, void>(this);
     }
+
     int getDeathTime() {
         return MemoryUtil::CallVFunc<110, int>(this);
     }

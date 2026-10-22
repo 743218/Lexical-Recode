@@ -8,7 +8,7 @@ private:
 
 	static bool ActorIsOnFireCallback(Actor* _this) {
 		static NoRender* noRenderMod = ModuleManager::getModule<NoRender>();
-		if (_this == Game::getLocalPlayer() && noRenderMod->isEnabled() && noRenderMod->noFire)
+		if (noRenderMod->isEnabled() && noRenderMod->noFire)
 			return false;
 
 		return oFunc(_this);
